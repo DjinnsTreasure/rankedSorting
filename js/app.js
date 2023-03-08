@@ -1,9 +1,35 @@
 
 APP = {
     init: () => {
-        APP.matchList = [],
-        APP.fetchData();
-        APP.addEventListener();
+        APP.matchList = [];
+        fetch(`https://splatoon3.ink/data/schedules.json`)
+        .then((response)=>{
+            if( !response.ok ) throw new Error
+            return response.json();
+        })
+        .then((data)=>{
+            return APP.matchList = data.data.bankaraSchedules.nodes;
+        })
+        .then(()=>{
+            APP.addEventListener();
+            APP.insertTitle();
+        })
+        .catch((err)=>{
+            alert(`Can't connect to servers :/`);
+            console.warn(err);
+        })
+        
+    },
+    insertTitle: () => {
+        const h1 = document.getElementsByTagName('h1')[0];
+        const h2 = document.createElement('h2');
+
+        const length = APP.matchList.length - 1;
+        const startDate = APP.convertDate(APP.matchList[0].startTime);
+        const endDate = APP.convertDate(APP.matchList[length].endTime);
+
+        h2.textContent = `Modes available from ${startDate} to ${endDate}`;
+        h1.insertAdjacentElement("afterend", h2);
     },
     addEventListener: () => {
         let btnSeries = document.getElementById('fetchSeries');
@@ -20,21 +46,6 @@ APP = {
             const btn = document.getElementById(btnId);
             btn.addEventListener('click', APP[`display${btnId.slice(5)}`], {once: true});
         });
-    },
-    fetchData: () => {
-        let url = 'https://splatoon3.ink/data/schedules.json'
-        fetch(url)
-        .then((response)=>{
-            if( !response.ok ) throw new Error
-            return response.json();
-        })
-        .then((data)=>{
-            APP.matchList = data.data.bankaraSchedules.nodes;
-        })
-        .catch((err)=>{
-            alert(`Can't connect to servers :/`);
-            console.warn(err);
-        })
     },
     displaySeries: () => {
         const challengeBattles = APP.matchList
