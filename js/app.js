@@ -8,24 +8,19 @@ APP = {
     addEventListener: () => {
         let btnSeries = document.getElementById('fetchSeries');
         let btnOpen = document.getElementById('fetchOpen');
-        let btnZonesSeries = document.getElementById('fetchZonesSeries');
-        let btnZonesOpen = document.getElementById('fetchZonesOpen');
-        let btnTowerSeries = document.getElementById('fetchTowerSeries');
-        let btnTowerOpen = document.getElementById('fetchTowerOpen');
-        let btnRainmakerSeries = document.getElementById('fetchRainmakerSeries');
-        let btnRainmakerOpen = document.getElementById('fetchRainmakerOpen');
-        let btnClamsSeries = document.getElementById('fetchClamsSeries');
-        let btnClamsOpen = document.getElementById('fetchClamsOpen');
+
         btnSeries.addEventListener('click', APP.displaySeries, {once : true});
         btnOpen.addEventListener('click', APP.displayOpen, {once : true});
-        btnZonesSeries.addEventListener('click', APP.displayZonesSeries, {once : true});
-        btnZonesOpen.addEventListener('click', APP.displayZonesOpen, {once : true});
-        btnTowerSeries.addEventListener('click', APP.displayTowerSeries, {once : true});
-        btnTowerOpen.addEventListener('click', APP.displayTowerOpen, {once : true});
-        btnRainmakerSeries.addEventListener('click', APP.displayRainmakerSeries, {once : true});
-        btnRainmakerOpen.addEventListener('click', APP.displayRainmakerOpen, {once : true});
-        btnClamsSeries.addEventListener('click', APP.displayClamsSeries, {once : true});
-        btnClamsOpen.addEventListener('click', APP.displayClamsOpen, {once : true});
+
+        const modes = ['Series', 'Open'];
+        const types = ['Zones', 'Tower', 'Rainmaker', 'Clams'];
+        const btnIds = types.flatMap(type => modes.map(mode => `fetch${type}${mode}`));
+        
+        btnIds.forEach(btnId => {
+            const btn = document.getElementById(btnId);
+            btn.addEventListener('click', APP[`display${btnId.slice(5)}`], {once: true});
+        });
+        console.log(btnIds.slice(5));
     },
     fetchData: () => {
         let url = 'https://splatoon3.ink/data/schedules.json'
