@@ -10,10 +10,10 @@ APP = {
         let btnOpen = document.getElementById('fetchOpen');
         let btnZonesSeries = document.getElementById('fetchZonesSeries');
         let btnZonesOpen = document.getElementById('fetchZonesOpen');
-        btnSeries.addEventListener('click', APP.displaySeries);
-        btnOpen.addEventListener('click', APP.displayOpen);
-        btnZonesSeries.addEventListener('click', APP.displayZonesSeries);
-        btnZonesOpen.addEventListener('click', APP.displayZonesOpen);
+        btnSeries.addEventListener('click', APP.displaySeries, {once : true});
+        btnOpen.addEventListener('click', APP.displayOpen, {once : true});
+        btnZonesSeries.addEventListener('click', APP.displayZonesSeries, {once : true});
+        btnZonesOpen.addEventListener('click', APP.displayZonesOpen, {once : true});
     },
     fetchData: () => {
         let url = 'https://splatoon3.ink/data/schedules.json'
@@ -66,7 +66,7 @@ APP = {
         }))
         .filter(schedule => schedule.settings !== null)
         .filter(schedule => schedule.settings.vsRule.rule === 'AREA');
-        
+
         const ul = document.getElementById('displayZonesSeries');
         const fetchAll = false;
 
@@ -96,10 +96,20 @@ APP = {
             if (fetchAll === true)
             {
                 li.textContent = `MODE: ${el.settings.vsRule.name} - STAGES: ${el.settings.vsStages[0].name} & ${el.settings.vsStages[1].name} - FROM: ${startDate} to ${endDate}`;
+                ul.appendChild(li);
             } else {
-                li.textContent = `STAGES: ${el.settings.vsStages[0].name} & ${el.settings.vsStages[1].name} - FROM: ${startDate} to ${endDate}`;
+                ul.innerHTML += `
+                <p><b>TIME:</b> ${startDate} - ${endDate}</p>
+                <b>STAGES</b>
+                <ul>
+                <li>${el.settings.vsStages[0].name}</li>
+                <li><img src="${el.settings.vsStages[0].image.url}" /></li>
+                <li>${el.settings.vsStages[1].name}</li>
+                <li><img src="${el.settings.vsStages[1].image.url}" /></li>
+                </ul>
+                <hr>
+                `
             }
-            ul.appendChild(li);
             console.log(el);
         });
     },
@@ -111,7 +121,7 @@ APP = {
         const month = dateTime.toLocaleString('en-US', { month: 'long' });
         const day = dateTime.getDate();
         let hour = dateTime.getHours();
-        const amOrPm = hour >= 12 ? 'pm' : 'am';
+        const amOrPm = hour >= 12 ? 'PM' : 'AM';
         
         hour = hour % 12 || 12;
         const formattedString = `${month} ${day}, ${hour}${amOrPm}`;
