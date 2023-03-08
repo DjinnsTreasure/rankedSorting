@@ -10,10 +10,22 @@ APP = {
         let btnOpen = document.getElementById('fetchOpen');
         let btnZonesSeries = document.getElementById('fetchZonesSeries');
         let btnZonesOpen = document.getElementById('fetchZonesOpen');
+        let btnTowerSeries = document.getElementById('fetchTowerSeries');
+        let btnTowerOpen = document.getElementById('fetchTowerOpen');
+        let btnRainmakerSeries = document.getElementById('fetchRainmakerSeries');
+        let btnRainmakerOpen = document.getElementById('fetchRainmakerOpen');
+        let btnClamsSeries = document.getElementById('fetchClamsSeries');
+        let btnClamsOpen = document.getElementById('fetchClamsOpen');
         btnSeries.addEventListener('click', APP.displaySeries, {once : true});
         btnOpen.addEventListener('click', APP.displayOpen, {once : true});
         btnZonesSeries.addEventListener('click', APP.displayZonesSeries, {once : true});
         btnZonesOpen.addEventListener('click', APP.displayZonesOpen, {once : true});
+        btnTowerSeries.addEventListener('click', APP.displayTowerSeries, {once : true});
+        btnTowerOpen.addEventListener('click', APP.displayTowerOpen, {once : true});
+        btnRainmakerSeries.addEventListener('click', APP.displayRainmakerSeries, {once : true});
+        btnRainmakerOpen.addEventListener('click', APP.displayRainmakerOpen, {once : true});
+        btnClamsSeries.addEventListener('click', APP.displayClamsSeries, {once : true});
+        btnClamsOpen.addEventListener('click', APP.displayClamsOpen, {once : true});
     },
     fetchData: () => {
         let url = 'https://splatoon3.ink/data/schedules.json'
@@ -83,6 +95,96 @@ APP = {
         .filter(schedule => schedule.settings.vsRule.rule === 'AREA');
         
         const ul = document.getElementById('displayZonesOpen');
+        const fetchAll = false;
+
+        APP.displayContent(openBattles, ul, fetchAll);
+    },
+    displayTowerSeries: () => {
+        const challengeBattles = APP.matchList
+        .map(schedule => ({
+            startTime: schedule.startTime,
+            endTime: schedule.endTime,
+            settings: schedule.bankaraMatchSettings.find(setting => setting.mode === 'CHALLENGE') || null
+        }))
+        .filter(schedule => schedule.settings !== null)
+        .filter(schedule => schedule.settings.vsRule.rule === 'LOFT');
+
+        const ul = document.getElementById('displayTowerSeries');
+        const fetchAll = false;
+
+        APP.displayContent(challengeBattles, ul, fetchAll);
+    },
+    displayTowerOpen: () => {
+        const openBattles = APP.matchList
+        .map(schedule => ({
+            startTime: schedule.startTime,
+            endTime: schedule.endTime,
+            settings: schedule.bankaraMatchSettings.find(setting => setting.mode === 'OPEN') || null
+        }))
+        .filter(schedule => schedule.settings !== null)
+        .filter(schedule => schedule.settings.vsRule.rule === 'LOFT');
+        
+        const ul = document.getElementById('displayTowerOpen');
+        const fetchAll = false;
+
+        APP.displayContent(openBattles, ul, fetchAll);
+    },
+    displayRainmakerSeries: () => {
+        const challengeBattles = APP.matchList
+        .map(schedule => ({
+            startTime: schedule.startTime,
+            endTime: schedule.endTime,
+            settings: schedule.bankaraMatchSettings.find(setting => setting.mode === 'CHALLENGE') || null
+        }))
+        .filter(schedule => schedule.settings !== null)
+        .filter(schedule => schedule.settings.vsRule.rule === 'GOAL');
+
+        const ul = document.getElementById('displayRainmakerSeries');
+        const fetchAll = false;
+
+        APP.displayContent(challengeBattles, ul, fetchAll);
+    },
+    displayRainmakerOpen: () => {
+        const openBattles = APP.matchList
+        .map(schedule => ({
+            startTime: schedule.startTime,
+            endTime: schedule.endTime,
+            settings: schedule.bankaraMatchSettings.find(setting => setting.mode === 'OPEN') || null
+        }))
+        .filter(schedule => schedule.settings !== null)
+        .filter(schedule => schedule.settings.vsRule.rule === 'GOAL');
+        
+        const ul = document.getElementById('displayRainmakerOpen');
+        const fetchAll = false;
+
+        APP.displayContent(openBattles, ul, fetchAll);
+    },
+    displayClamsSeries: () => {
+        const challengeBattles = APP.matchList
+        .map(schedule => ({
+            startTime: schedule.startTime,
+            endTime: schedule.endTime,
+            settings: schedule.bankaraMatchSettings.find(setting => setting.mode === 'CHALLENGE') || null
+        }))
+        .filter(schedule => schedule.settings !== null)
+        .filter(schedule => schedule.settings.vsRule.rule === 'CLAM');
+
+        const ul = document.getElementById('displayClamsSeries');
+        const fetchAll = false;
+
+        APP.displayContent(challengeBattles, ul, fetchAll);
+    },
+    displayClamsOpen: () => {
+        const openBattles = APP.matchList
+        .map(schedule => ({
+            startTime: schedule.startTime,
+            endTime: schedule.endTime,
+            settings: schedule.bankaraMatchSettings.find(setting => setting.mode === 'OPEN') || null
+        }))
+        .filter(schedule => schedule.settings !== null)
+        .filter(schedule => schedule.settings.vsRule.rule === 'CLAM');
+        
+        const ul = document.getElementById('displayClamsOpen');
         const fetchAll = false;
 
         APP.displayContent(openBattles, ul, fetchAll);
