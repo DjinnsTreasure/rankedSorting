@@ -20,7 +20,6 @@ APP = {
             const btn = document.getElementById(btnId);
             btn.addEventListener('click', APP[`display${btnId.slice(5)}`], {once: true});
         });
-        console.log(btnIds.slice(5));
     },
     fetchData: () => {
         let url = 'https://splatoon3.ink/data/schedules.json'
@@ -207,7 +206,6 @@ APP = {
                 <hr>
                 `
             }
-            console.log(el);
         });
     },
 
