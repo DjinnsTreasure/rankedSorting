@@ -6,29 +6,17 @@ function fetchData () {
         return response.json();
     })
     .then((data)=>{
-        let schedules = data.data.bankaraSchedules.nodes;
-        // let filteredSchedules = [];
-        // schedules.forEach(element => {
-        //     let mode = element.bankaraMatchSettings;
-        //     let zones = mode.forEach(el => {
-        //        let rule = el.vsRule.rule;
-        //        if (rule === 'AREA') {
-        //         filteredSchedules.push(mode);
-        //        }
-        //     })
-        // });
-        // console.log(filteredSchedules)
-        let filtered = [];
-        
+        let schedules = data.data.coopGroupingSchedule.regularSchedules.nodes;
+        let setting = schedules.forEach((set)=>{
+            // console.log(set.setting.coopStage); //will get name and thumb image
+            // console.log(set.setting.weapons) //will get weapon and weapon name
+            // console.log(set.startTime);
+            // console.log(set.endTime);
 
-        schedules.forEach((el)=>{
-            let mode = el.bankaraMatchSettings
-            // const open = el.filter(file => file.mode === 'OPEN');
-            // const openFiles = data.filter(file => file.mode === 'OPEN');
-
-            console.log(mode);
         })
-        console.log(filtered);
+        
+        // console.log(schedules)
+        
     })
 }
 fetchData();

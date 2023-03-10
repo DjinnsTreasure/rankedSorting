@@ -2,13 +2,15 @@
 APP = {
     init: () => {
         APP.matchList = [];
+        APP.salmonList = [];
         fetch(`https://splatoon3.ink/data/schedules.json`)
         .then((response)=>{
             if( !response.ok ) throw new Error
             return response.json();
         })
         .then((data)=>{
-            APP.matchList = data.data;
+            APP.matchList = data.data.bankaraSchedules.nodes;
+            APP.salmonList = data.data.coopGroupingSchedule.regularSchedules.nodes;
             return;
         })
         .then(()=>{
@@ -22,120 +24,102 @@ APP = {
         
     },
     insertTitle: () => {
-        let anarchyData = APP.matchList.bankaraSchedules.nodes
-        let salmonData = APP.matchList.coopGroupingSchedule.regularSchedules.nodes;
         const h1 = document.getElementsByTagName('h1')[0];
         const h2a = document.createElement('h2');
         const h2b = document.createElement('h2');
 
-        const lengthMatch = anarchyData.length - 1;
-        const startDateMatch = APP.convertDate(anarchyData[0].startTime);
-        const endDateMatch = APP.convertDate(anarchyData[lengthMatch].endTime);
+        const lengthMatch = APP.matchList.length - 1;
+        const startDateMatch = APP.convertDate(APP.matchList[0].startTime);
+        const endDateMatch = APP.convertDate(APP.matchList[lengthMatch].endTime);
 
         h2a.textContent = `Modes available from ${startDateMatch} to ${endDateMatch}`;
         h1.insertAdjacentElement("afterend", h2a);
 
-        const lengthSalmon = salmonData.length - 1;
-        const startDateSalmon = APP.convertDate(salmonData[0].startTime);
-        const endDateSalmon = APP.convertDate(salmonData[lengthSalmon].endTime);
+        const lengthSalmon = APP.salmonList.length - 1;
+        const startDateSalmon = APP.convertDate(APP.salmonList[0].startTime);
+        const endDateSalmon = APP.convertDate(APP.salmonList[lengthSalmon].endTime);
 
         h2b.textContent = `Salmon available from ${startDateSalmon} to ${endDateSalmon}`;
         h2a.insertAdjacentElement("afterend", h2b);
     },
     addEventListener: () => {
-        const section = document.getElementById('displayContent');
-        document.getElementById('fetchSeries').addEventListener('click', () =>{
-            section.innerHTML = "";
-            APP.getData('series');
-        });
-        document.getElementById('fetchOpen').addEventListener('click', ()=>{
-            section.innerHTML = "";
-            APP.getData('open');
-        });
-        document.getElementById('fetchSalmon').addEventListener('click', ()=>{
-            section.innerHTML = "";
-            APP.getData('salmon');
-        });
+        let btnSeries = document.getElementById('fetchSeries');
+        let btnOpen = document.getElementById('fetchOpen');
+        let btnSalmon = document.getElementById('fetchSalmon');
 
-        // const modes = ['Series', 'Open'];
-        // const types = ['Zones', 'Tower', 'Rainmaker', 'Clams'];
-        // const btnIds = types.flatMap(type => modes.map(mode => `fetch${type}${mode}`));
+        btnSeries.addEventListener('click', APP.displaySeries, {once : true});
+        btnOpen.addEventListener('click', APP.displayOpen, {once : true});
+        btnSalmon.addEventListener('click', APP.displaySalmon, {once : true});
+
+        const modes = ['Series', 'Open'];
+        const types = ['Zones', 'Tower', 'Rainmaker', 'Clams'];
+        const btnIds = types.flatMap(type => modes.map(mode => `fetch${type}${mode}`));
         
-        // btnIds.forEach(btnId => {
-        //     const btn = document.getElementById(btnId);
-        //     btn.addEventListener('click', APP[`display${btnId.slice(5)}`], {once: true});
-        // });
+        btnIds.forEach(btnId => {
+            const btn = document.getElementById(btnId);
+            btn.addEventListener('click', APP[`display${btnId.slice(5)}`], {once: true});
+        });
     },
-    getData: (type) => {
-        let data;
-        if ( type === 'series' || type === 'open' ) {
-            const anarchyData = APP.matchList.bankaraSchedules.nodes
-            let modeType;
-            if ( type === 'series' ) { modeType = 'CHALLENGE' } else { modeType = 'OPEN' };
-            data = anarchyData.map(schedule => ({
-                startTime: schedule.startTime,
-                endTime: schedule.endTime,
-                settings: schedule.bankaraMatchSettings.find(setting => setting.mode === modeType) || null
-            }))
-            .filter(schedule => schedule.settings !== null);
-            APP.displayVS(data);
-        } else if ( type === 'salmon' ) {
-            const salmonData = APP.matchList.coopGroupingSchedule.regularSchedules.nodes;
-            data = salmonData.map(schedule => ({
-                startTime: schedule.startTime,
-                endTime: schedule.endTime,
-                stages: schedule.setting.coopStage,
-                weapons: schedule.setting.weapons
-            }))
-            .flat();
-            APP.displayCOOP(data);
-        } else { return };
+    displaySeries: () => {
+        const challengeBattles = APP.matchList
+        .map(schedule => ({
+            startTime: schedule.startTime,
+            endTime: schedule.endTime,
+            settings: schedule.bankaraMatchSettings.find(setting => setting.mode === 'CHALLENGE') || null
+        }))
+        .filter(schedule => schedule.settings !== null);
+        const ul = document.getElementById('displaySeries');
+        const fetchAll = true;
+
+        APP.displayContent(challengeBattles, ul, fetchAll);
     },
-    displayVS: (data) => {
-        console.log(data);
-        const section = document.getElementById('displayContent');
-        data.forEach(el => {
+    displayOpen: () => {
+        const openBattles = APP.matchList
+        .map(schedule => ({
+            startTime: schedule.startTime,
+            endTime: schedule.endTime,
+            settings: schedule.bankaraMatchSettings.find(setting => setting.mode === 'OPEN') || null
+        }))
+        .filter(schedule => schedule.settings !== null);
+        const ul = document.getElementById('displayOpen');
+        const fetchAll = true;
+
+        APP.displayContent(openBattles, ul, fetchAll);
+    },
+    displaySalmon: () => {
+        const salmonRun = APP.salmonList
+        .map(schedule => ({
+            startTime: schedule.startTime,
+            endTime: schedule.endTime,
+            stages: schedule.setting.coopStage,
+            weapons: schedule.setting.weapons
+        }))
+        .flat();
+        const ul = document.getElementById('displaySalmon');
+        console.log(salmonRun);
+
+        salmonRun.forEach(el => {
             let startDate = APP.convertDate(el.startTime);
             let endDate = APP.convertDate(el.endTime);
-            section.innerHTML += `
-                <p class="smallHeader"><b>TIME:</b> ${startDate} - ${endDate}</p>
-                <p class="miniHeader"><b>MODE:</b> ${el.settings.vsRule.name}</p>
-                <b>STAGES</b>
+                ul.innerHTML += `
+                <p><b>TIME:</b> ${startDate} - ${endDate}</p>
+                <b>STAGE</b>
                 <ul>
-                <li>${el.settings.vsStages[0].name}</li>
-                <li><img src="${el.settings.vsStages[0].image.url}" /></li>
-                <li>${el.settings.vsStages[1].name}</li>
-                <li><img src="${el.settings.vsStages[1].image.url}" /></li>
+                <li>${el.stages.name}</li>
+                <li><img src="${el.stages.image.url}" /></li>
+                </ul>
+                <b>WEAPONS</b>
+                <ul>
+                <li>${el.weapons[0].name}</li>
+                <li>${el.weapons[1].name}</li>
+                <li>${el.weapons[2].name}</li>
+                <li>${el.weapons[3].name}</li>
                 </ul>
                 <hr>
                 `
         });
     },
-    displayCOOP: (data) => {
-        console.log(data);
-        const section = document.getElementById('displayContent');
-        data.forEach(el => {
-            let startDate = APP.convertDate(el.startTime);
-            let endDate = APP.convertDate(el.endTime);
-            section.innerHTML += `
-            <p class="miniHeader"><b>TIME:</b> ${startDate} - ${endDate}</p>
-            <b>STAGE</b>
-            <ul>
-            <li>${el.stages.name}</li>
-            <li><img src="${el.stages.thumbnailImage.url}" /></li>
-            </ul>
-            <b>WEAPONS</b>
-            <ul>
-            <li>${el.weapons[0].name}</li>
-            <li>${el.weapons[1].name}</li>
-            <li>${el.weapons[2].name}</li>
-            <li>${el.weapons[3].name}</li>
-            </ul>
-            <hr>
-            `
-        });
-    },
-   
+
     displayZonesSeries: () => {
         const challengeBattles = APP.matchList
         .map(schedule => ({
@@ -255,6 +239,31 @@ APP = {
         const fetchAll = false;
 
         APP.displayContent(openBattles, ul, fetchAll);
+    },
+
+    displayContent: (data, ul, fetchAll) => {
+        data.forEach(el => {
+            let startDate = APP.convertDate(el.startTime);
+            let endDate = APP.convertDate(el.endTime);
+            const li = document.createElement('li');
+            if (fetchAll === true)
+            {
+                li.textContent = `MODE: ${el.settings.vsRule.name} - STAGES: ${el.settings.vsStages[0].name} & ${el.settings.vsStages[1].name} - FROM: ${startDate} to ${endDate}`;
+                ul.appendChild(li);
+            } else {
+                ul.innerHTML += `
+                <p><b>TIME:</b> ${startDate} - ${endDate}</p>
+                <b>STAGES</b>
+                <ul>
+                <li>${el.settings.vsStages[0].name}</li>
+                <li><img src="${el.settings.vsStages[0].image.url}" /></li>
+                <li>${el.settings.vsStages[1].name}</li>
+                <li><img src="${el.settings.vsStages[1].image.url}" /></li>
+                </ul>
+                <hr>
+                `
+            }
+        });
     },
 
     convertDate: (importedDate) => {
