@@ -2,6 +2,7 @@
 APP = {
     init: () => {
         APP.matchList = [];
+        APP.currentData = [];
         fetch(`https://splatoon3.ink/data/schedules.json`)
         .then((response)=>{
             if( !response.ok ) throw new Error
@@ -62,7 +63,10 @@ APP = {
         const btnIds = ['AREA', 'LOFT', 'GOAL', 'CLAM'];
         btnIds.forEach(btnId => {
             const btn = document.getElementById(btnId);
-            btn.addEventListener('click', (ev)=>{APP.vsRule = ev.target.id});
+            btn.addEventListener('click', (ev)=>{
+                let id = ev.target.id;
+                APP.sortData(id);
+            });
         });
     },
     getData: (type) => {
@@ -90,10 +94,15 @@ APP = {
             APP.displayCOOP(data);
         } else { return };
     },
-    displayVS: (data) => {
+    displayVS: (data, dontSave) => {
+        if (!dontSave) {
+            APP.currentData = data;
+        }
         let vsRules = document.getElementsByClassName('vsRuleButtons')[0];
         vsRules.classList.remove('hidden');
+
         const section = document.getElementById('displayContent');
+        section.innerHTML = "";
         data.forEach(el => {
             let startDate = APP.convertDate(el.startTime);
             let endDate = APP.convertDate(el.endTime);
@@ -112,7 +121,6 @@ APP = {
         });
     },
     displayCOOP: (data) => {
-        console.log(data);
         const section = document.getElementById('displayContent');
         data.forEach(el => {
             let startDate = APP.convertDate(el.startTime);
@@ -134,6 +142,11 @@ APP = {
             <hr>
             `
         });
+    },
+    sortData: (id) => {
+        const dontSave = true;
+        let filteredData = APP.currentData.filter(schedule => schedule.settings.vsRule.rule === id);
+        APP.displayVS(filteredData, dontSave);
     },
    
     displayZonesSeries: () => {
