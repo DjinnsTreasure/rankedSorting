@@ -18,9 +18,13 @@ button {
     margin: .5rem;
 }
 
-.modeButtons {
+.modeButtons, .vsRuleButtons {
     display: flex;
     justify-content: center;
+}
+
+.vsRuleButtons button {
+    padding: .75rem;
 }
 
 button img {
@@ -44,4 +48,8 @@ li {
 }
 .miniHeader {
     font-size: 1.25rem;
+}
+
+.hidden {
+    display: none;
 }

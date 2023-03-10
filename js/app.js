@@ -44,6 +44,7 @@ APP = {
     },
     addEventListener: () => {
         const section = document.getElementById('displayContent');
+        let vsRules = document.getElementsByClassName('vsRuleButtons')[0];
         document.getElementById('fetchSeries').addEventListener('click', () =>{
             section.innerHTML = "";
             APP.getData('series');
@@ -53,18 +54,16 @@ APP = {
             APP.getData('open');
         });
         document.getElementById('fetchSalmon').addEventListener('click', ()=>{
+            vsRules.classList.add('hidden');
             section.innerHTML = "";
             APP.getData('salmon');
         });
 
-        // const modes = ['Series', 'Open'];
-        // const types = ['Zones', 'Tower', 'Rainmaker', 'Clams'];
-        // const btnIds = types.flatMap(type => modes.map(mode => `fetch${type}${mode}`));
-        
-        // btnIds.forEach(btnId => {
-        //     const btn = document.getElementById(btnId);
-        //     btn.addEventListener('click', APP[`display${btnId.slice(5)}`], {once: true});
-        // });
+        const btnIds = ['AREA', 'LOFT', 'GOAL', 'CLAM'];
+        btnIds.forEach(btnId => {
+            const btn = document.getElementById(btnId);
+            btn.addEventListener('click', (ev)=>{APP.vsRule = ev.target.id});
+        });
     },
     getData: (type) => {
         let data;
@@ -92,7 +91,8 @@ APP = {
         } else { return };
     },
     displayVS: (data) => {
-        console.log(data);
+        let vsRules = document.getElementsByClassName('vsRuleButtons')[0];
+        vsRules.classList.remove('hidden');
         const section = document.getElementById('displayContent');
         data.forEach(el => {
             let startDate = APP.convertDate(el.startTime);
