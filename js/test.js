@@ -6,13 +6,9 @@ function fetchData () {
         return response.json();
     })
     .then((data)=>{
-        let schedules = data.data.coopGroupingSchedule.regularSchedules.nodes;
-        let setting = schedules.forEach((set)=>{
-            // console.log(set.setting.coopStage); //will get name and thumb image
-            // console.log(set.setting.weapons) //will get weapon and weapon name
-            // console.log(set.startTime);
-            // console.log(set.endTime);
-
+        let schedules = data.data.xSchedules.nodes
+        schedules.forEach(el => {
+            console.log(el)
         })
         
         // console.log(schedules)

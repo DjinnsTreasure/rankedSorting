@@ -20,6 +20,7 @@ button {
 
 .modeButtons, .vsRuleButtons {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
 }
 
@@ -52,4 +53,26 @@ li {
 
 .hidden {
     display: none;
+}
+
+section { 
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.displayBox {
+    border: 2px solid black;
+    padding: 1rem;
+}
+
+.displayBox img {
+    max-width: 100%;
+}
+
+@media only screen and (min-width: 60em) {
+    .displayBox {
+        width: 30vw;
+    }
 }

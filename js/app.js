@@ -48,6 +48,11 @@ APP = {
     addEventListener: () => {
         const section = document.getElementById('displayContent');
         let vsRules = document.getElementsByClassName('vsRuleButtons')[0];
+        document.getElementById('fetchTurf').addEventListener('click', () =>{
+            vsRules.classList.add('hidden');
+            section.innerHTML = "";
+            APP.getData('turf');
+        });
         document.getElementById('fetchSeries').addEventListener('click', () =>{
             section.innerHTML = "";
             APP.getData('series');
@@ -55,6 +60,10 @@ APP = {
         document.getElementById('fetchOpen').addEventListener('click', ()=>{
             section.innerHTML = "";
             APP.getData('open');
+        });
+        document.getElementById('fetchX').addEventListener('click', ()=>{
+            section.innerHTML = "";
+            APP.getData('X');
         });
         document.getElementById('fetchSalmon').addEventListener('click', ()=>{
             vsRules.classList.add('hidden');
@@ -95,7 +104,46 @@ APP = {
             }))
             .flat();
             APP.displayCOOP(data);
-        } else { return };
+        } else if ( type === 'turf' ){
+            const turfData = APP.matchList.regularSchedules.nodes;
+            data = turfData.map(schedule => ({
+                startTime: schedule.startTime,
+                endTime: schedule.endTime,
+                settings: schedule.regularMatchSetting
+            }))
+            .flat();
+            APP.displayTurf(data);
+        } else if (type === 'X') {
+            const xData = APP.matchList.xSchedules.nodes;
+            data = xData.map(schedule => ({
+                startTime: schedule.startTime,
+                endTime: schedule.endTime,
+                settings: schedule.xMatchSetting
+            }))
+            .flat();
+            APP.displayVS(data);
+        }   else { return };
+    },
+
+    displayTurf: (data) => {
+        const section = document.getElementById('displayContent');
+        section.innerHTML = "";
+        data.forEach(el => {
+            let startDate = APP.convertDate(el.startTime);
+            let endDate = APP.convertDate(el.endTime);
+            section.innerHTML += `
+                <div class ="displayBox">
+                <p class="smallHeader"><b>TIME:</b> ${startDate} - ${endDate}</p>
+                <b>STAGES</b>
+                <ul>
+                <li>${el.settings.vsStages[0].name}</li>
+                <li><img src="${el.settings.vsStages[0].image.url}" /></li>
+                <li>${el.settings.vsStages[1].name}</li>
+                <li><img src="${el.settings.vsStages[1].image.url}" /></li>
+                </ul>
+                </div>
+                `
+        })
     },
 
     displayVS: (data, isSort) => {
@@ -111,6 +159,7 @@ APP = {
             let startDate = APP.convertDate(el.startTime);
             let endDate = APP.convertDate(el.endTime);
             section.innerHTML += `
+                <div class ="displayBox">
                 <p class="smallHeader"><b>TIME:</b> ${startDate} - ${endDate}</p>
                 <p class="miniHeader"><b>MODE:</b> ${el.settings.vsRule.name}</p>
                 <b>STAGES</b>
@@ -120,7 +169,7 @@ APP = {
                 <li>${el.settings.vsStages[1].name}</li>
                 <li><img src="${el.settings.vsStages[1].image.url}" /></li>
                 </ul>
-                <hr>
+                </div>
                 `
         });
     },
@@ -131,6 +180,7 @@ APP = {
             let startDate = APP.convertDate(el.startTime);
             let endDate = APP.convertDate(el.endTime);
             section.innerHTML += `
+            <div class ="displayBox">
             <p class="miniHeader"><b>TIME:</b> ${startDate} - ${endDate}</p>
             <b>STAGE</b>
             <ul>
@@ -144,7 +194,7 @@ APP = {
             <li>${el.weapons[2].name}</li>
             <li>${el.weapons[3].name}</li>
             </ul>
-            <hr>
+            </div>
             `
         });
     },
