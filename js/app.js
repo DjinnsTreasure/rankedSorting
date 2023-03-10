@@ -22,7 +22,7 @@ APP = {
         })
         
     },
-    
+
     insertTitle: () => {
         let anarchyData = APP.matchList.bankaraSchedules.nodes
         let salmonData = APP.matchList.coopGroupingSchedule.regularSchedules.nodes;
@@ -98,8 +98,8 @@ APP = {
         } else { return };
     },
 
-    displayVS: (data, dontSave) => {
-        if (!dontSave) {
+    displayVS: (data, isSort) => {
+        if (!isSort) {
             APP.currentData = data;
         }
         let vsRules = document.getElementsByClassName('vsRuleButtons')[0];
@@ -150,9 +150,9 @@ APP = {
     },
 
     sortData: (id) => {
-        const dontSave = true;
+        const isSort = true;
         let filteredData = APP.currentData.filter(schedule => schedule.settings.vsRule.rule === id);
-        APP.displayVS(filteredData, dontSave);
+        APP.displayVS(filteredData, isSort);
     },
 
     convertDate: (importedDate) => {
