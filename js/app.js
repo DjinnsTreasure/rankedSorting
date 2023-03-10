@@ -22,6 +22,7 @@ APP = {
         })
         
     },
+    
     insertTitle: () => {
         let anarchyData = APP.matchList.bankaraSchedules.nodes
         let salmonData = APP.matchList.coopGroupingSchedule.regularSchedules.nodes;
@@ -43,6 +44,7 @@ APP = {
         h2b.textContent = `Salmon available from ${startDateSalmon} to ${endDateSalmon}`;
         h2a.insertAdjacentElement("afterend", h2b);
     },
+
     addEventListener: () => {
         const section = document.getElementById('displayContent');
         let vsRules = document.getElementsByClassName('vsRuleButtons')[0];
@@ -69,6 +71,7 @@ APP = {
             });
         });
     },
+
     getData: (type) => {
         let data;
         if ( type === 'series' || type === 'open' ) {
@@ -94,6 +97,7 @@ APP = {
             APP.displayCOOP(data);
         } else { return };
     },
+
     displayVS: (data, dontSave) => {
         if (!dontSave) {
             APP.currentData = data;
@@ -120,6 +124,7 @@ APP = {
                 `
         });
     },
+
     displayCOOP: (data) => {
         const section = document.getElementById('displayContent');
         data.forEach(el => {
@@ -143,131 +148,11 @@ APP = {
             `
         });
     },
+
     sortData: (id) => {
         const dontSave = true;
         let filteredData = APP.currentData.filter(schedule => schedule.settings.vsRule.rule === id);
         APP.displayVS(filteredData, dontSave);
-    },
-   
-    displayZonesSeries: () => {
-        const challengeBattles = APP.matchList
-        .map(schedule => ({
-            startTime: schedule.startTime,
-            endTime: schedule.endTime,
-            settings: schedule.bankaraMatchSettings.find(setting => setting.mode === 'CHALLENGE') || null
-        }))
-        .filter(schedule => schedule.settings !== null)
-        .filter(schedule => schedule.settings.vsRule.rule === 'AREA');
-
-        const ul = document.getElementById('displayZonesSeries');
-        const fetchAll = false;
-
-        APP.displayContent(challengeBattles, ul, fetchAll);
-    },
-    displayZonesOpen: () => {
-        const openBattles = APP.matchList
-        .map(schedule => ({
-            startTime: schedule.startTime,
-            endTime: schedule.endTime,
-            settings: schedule.bankaraMatchSettings.find(setting => setting.mode === 'OPEN') || null
-        }))
-        .filter(schedule => schedule.settings !== null)
-        .filter(schedule => schedule.settings.vsRule.rule === 'AREA');
-        
-        const ul = document.getElementById('displayZonesOpen');
-        const fetchAll = false;
-
-        APP.displayContent(openBattles, ul, fetchAll);
-    },
-    displayTowerSeries: () => {
-        const challengeBattles = APP.matchList
-        .map(schedule => ({
-            startTime: schedule.startTime,
-            endTime: schedule.endTime,
-            settings: schedule.bankaraMatchSettings.find(setting => setting.mode === 'CHALLENGE') || null
-        }))
-        .filter(schedule => schedule.settings !== null)
-        .filter(schedule => schedule.settings.vsRule.rule === 'LOFT');
-
-        const ul = document.getElementById('displayTowerSeries');
-        const fetchAll = false;
-
-        APP.displayContent(challengeBattles, ul, fetchAll);
-    },
-    displayTowerOpen: () => {
-        const openBattles = APP.matchList
-        .map(schedule => ({
-            startTime: schedule.startTime,
-            endTime: schedule.endTime,
-            settings: schedule.bankaraMatchSettings.find(setting => setting.mode === 'OPEN') || null
-        }))
-        .filter(schedule => schedule.settings !== null)
-        .filter(schedule => schedule.settings.vsRule.rule === 'LOFT');
-        
-        const ul = document.getElementById('displayTowerOpen');
-        const fetchAll = false;
-
-        APP.displayContent(openBattles, ul, fetchAll);
-    },
-    displayRainmakerSeries: () => {
-        const challengeBattles = APP.matchList
-        .map(schedule => ({
-            startTime: schedule.startTime,
-            endTime: schedule.endTime,
-            settings: schedule.bankaraMatchSettings.find(setting => setting.mode === 'CHALLENGE') || null
-        }))
-        .filter(schedule => schedule.settings !== null)
-        .filter(schedule => schedule.settings.vsRule.rule === 'GOAL');
-
-        const ul = document.getElementById('displayRainmakerSeries');
-        const fetchAll = false;
-
-        APP.displayContent(challengeBattles, ul, fetchAll);
-    },
-    displayRainmakerOpen: () => {
-        const openBattles = APP.matchList
-        .map(schedule => ({
-            startTime: schedule.startTime,
-            endTime: schedule.endTime,
-            settings: schedule.bankaraMatchSettings.find(setting => setting.mode === 'OPEN') || null
-        }))
-        .filter(schedule => schedule.settings !== null)
-        .filter(schedule => schedule.settings.vsRule.rule === 'GOAL');
-        
-        const ul = document.getElementById('displayRainmakerOpen');
-        const fetchAll = false;
-
-        APP.displayContent(openBattles, ul, fetchAll);
-    },
-    displayClamsSeries: () => {
-        const challengeBattles = APP.matchList
-        .map(schedule => ({
-            startTime: schedule.startTime,
-            endTime: schedule.endTime,
-            settings: schedule.bankaraMatchSettings.find(setting => setting.mode === 'CHALLENGE') || null
-        }))
-        .filter(schedule => schedule.settings !== null)
-        .filter(schedule => schedule.settings.vsRule.rule === 'CLAM');
-
-        const ul = document.getElementById('displayClamsSeries');
-        const fetchAll = false;
-
-        APP.displayContent(challengeBattles, ul, fetchAll);
-    },
-    displayClamsOpen: () => {
-        const openBattles = APP.matchList
-        .map(schedule => ({
-            startTime: schedule.startTime,
-            endTime: schedule.endTime,
-            settings: schedule.bankaraMatchSettings.find(setting => setting.mode === 'OPEN') || null
-        }))
-        .filter(schedule => schedule.settings !== null)
-        .filter(schedule => schedule.settings.vsRule.rule === 'CLAM');
-        
-        const ul = document.getElementById('displayClamsOpen');
-        const fetchAll = false;
-
-        APP.displayContent(openBattles, ul, fetchAll);
     },
 
     convertDate: (importedDate) => {
