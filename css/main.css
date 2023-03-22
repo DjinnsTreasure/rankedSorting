@@ -1,13 +1,20 @@
 * {
-    --lavender: #CCC9DC;
-    --charcoal: #324A5F;
-    --oxford: #1B2A41;
-    --rich: #0C1821;
+    --white: #f5f5f5;
+    --grey: #313131;
+    --darkgrey: #262626;
+    --black: #151515;
+
+    --turf: #c5f700;
+    --salmon: #cf2c03;
+    --zones: #fd5603;
+    --tower: #8e00fa;
+    --rainmaker: #fbff10;
+    --clams: #00df95;
 }
 html {
     text-align: center;
-    background-color: var(--lavender);
-    color: var(--rich);
+    background-color: var(--darkgrey);
+    color: var(--white);
 }
 div {
     margin-bottom: 1rem;
@@ -71,18 +78,45 @@ section {
 }
 
 .displayBox {
-    border: 2px solid var(--rich);
+    border: 2px solid var(--black);
+    box-shadow: 8px 8px 2px 1px var(--black);
     border-radius: 30px;
     padding: 1rem;
-    background-color: rgba(255, 255, 255, 0.5);
-    -webkit-border-radius: 30px;
-    -moz-border-radius: 30px;
-    -ms-border-radius: 30px;
-    -o-border-radius: 30px;
+    background-color: var(--grey);
 }
+
+/* .displayBox p {
+    background-color: var(--black);
+    padding: 1rem .25rem;
+} */
 
 .displayBox img {
     max-width: 100%;
+}
+
+.displayBox.turf {
+    border-color: var(--turf);
+    box-shadow: 5px 5px var(--turf);
+}
+.displayBox.coop {
+    border-color: var(--salmon);
+    box-shadow: 5px 5px var(--salmon);
+}
+.displayBox.AREA {
+    border-color: var(--zones);
+    box-shadow: 5px 5px var(--zones);
+}
+.displayBox.LOFT {
+    border-color: var(--tower);
+    box-shadow: 5px 5px var(--tower);
+}
+.displayBox.GOAL {
+    border-color: var(--rainmaker);
+    box-shadow: 5px 5px var(--rainmaker);
+}
+.displayBox.CLAM {
+    border-color: var(--clams);
+    box-shadow: 5px 5px var(--clams);
 }
 
 @media only screen and (min-width: 60em) {

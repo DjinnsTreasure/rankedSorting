@@ -132,17 +132,17 @@ APP = {
             let startDate = APP.convertDate(el.startTime);
             let endDate = APP.convertDate(el.endTime);
             section.innerHTML += `
-                <div class ="displayBox">
-                <p class="smallHeader"><b>TIME:</b> ${startDate} - ${endDate}</p>
-                <b>STAGES</b>
-                <ul>
-                <li>${el.settings.vsStages[0].name}</li>
-                <li><img src="${el.settings.vsStages[0].image.url}" /></li>
-                <li>${el.settings.vsStages[1].name}</li>
-                <li><img src="${el.settings.vsStages[1].image.url}" /></li>
-                </ul>
-                </div>
-                `
+            <div class ="displayBox turf">
+            <p class="smallHeader"><b>TIME:</b> ${startDate} - ${endDate}</p>
+            <b>STAGES</b>
+            <ul>
+            <li>${el.settings.vsStages[0].name}</li>
+            <li><img src="${el.settings.vsStages[0].image.url}" /></li>
+            <li>${el.settings.vsStages[1].name}</li>
+            <li><img src="${el.settings.vsStages[1].image.url}" /></li>
+            </ul>
+            </div>
+            `
         })
     },
 
@@ -159,7 +159,7 @@ APP = {
             let startDate = APP.convertDate(el.startTime);
             let endDate = APP.convertDate(el.endTime);
             section.innerHTML += `
-                <div class ="displayBox">
+                <div class ="displayBox ${el.settings.vsRule.rule}">
                 <p class="smallHeader"><b>TIME:</b> ${startDate} - ${endDate}</p>
                 <p class="miniHeader"><b>MODE:</b> ${el.settings.vsRule.name}</p>
                 <b>STAGES</b>
@@ -180,7 +180,7 @@ APP = {
             let startDate = APP.convertDate(el.startTime);
             let endDate = APP.convertDate(el.endTime);
             section.innerHTML += `
-            <div class ="displayBox">
+            <div class ="displayBox coop">
             <p class="miniHeader"><b>TIME:</b> ${startDate} - ${endDate}</p>
             <b>STAGE</b>
             <ul>
