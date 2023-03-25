@@ -93,7 +93,7 @@ APP = {
                 settings: schedule.bankaraMatchSettings.find(setting => setting.mode === modeType) || null
             }))
             .filter(schedule => schedule.settings !== null);
-            APP.displayVS(data, false, type);
+            APP.displayVS(data, true, type);
         } else if ( type === 'salmon' ) {
             const salmonData = APP.matchList.coopGroupingSchedule.regularSchedules.nodes;
             data = salmonData.map(schedule => ({
@@ -121,7 +121,7 @@ APP = {
                 settings: schedule.xMatchSetting
             }))
             .flat();
-            APP.displayVS(data, false, type);
+            APP.displayVS(data, true, type);
         }   else { return };
     },
 
