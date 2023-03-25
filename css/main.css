@@ -11,8 +11,6 @@
     --rainmaker: #fbff10;
     --clams: #00df95;
 }
-
-
 html {
     text-align: center;
     background-color: var(--darkgrey);
@@ -61,9 +59,7 @@ li {
 }
 
 .smallHeader {
-    font-size: 1.75rem;
-    font-weight: bold;
-    line-height: 0.25;
+    font-size: 1.5rem;
 }
 
 .miniHeader {
@@ -87,28 +83,12 @@ section {
     border-radius: 30px;
     padding: 1rem;
     background-color: var(--grey);
-    position: relative;
 }
 
 /* .displayBox p {
     background-color: var(--black);
     padding: 1rem .25rem;
 } */
-
-.banner {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 0;
-    height: 0;
-    border-bottom: 80px solid transparent;
-    border-left: 80px solid var(--turf);
-    border-radius: 30px 0 100px;
-}
-
-.coop .banner {
-    border-left: 80px solid var(--salmon);
-}
 
 .displayBox img {
     max-width: 100%;
@@ -126,51 +106,21 @@ section {
     border-color: var(--zones);
     box-shadow: 5px 5px var(--zones);
 }
-.AREA .banner {
-    border-left: 80px solid var(--zones);
-}
 .displayBox.LOFT {
     border-color: var(--tower);
     box-shadow: 5px 5px var(--tower);
-}
-.LOFT .banner {
-    border-left: 80px solid var(--tower);
 }
 .displayBox.GOAL {
     border-color: var(--rainmaker);
     box-shadow: 5px 5px var(--rainmaker);
 }
-.GOAL .banner {
-    border-left: 80px solid var(--rainmaker);
-}
 .displayBox.CLAM {
     border-color: var(--clams);
     box-shadow: 5px 5px var(--clams);
 }
-.CLAM .banner {
-    border-left: 80px solid var(--clams);
-}
-
-
-
 
 @media only screen and (min-width: 60em) {
     .displayBox {
         width: 30vw;
     }
-}
-
-
-
-.banner__text {
-    position: absolute;
-    top: 55px;
-    left: -95px;
-    width: 100px;
-    text-align: center;
-    color: var(--darkgrey);
-    font-size: 18px;
-    font-weight: bold;
-    transform-origin: 0 0;
-    transform: rotate(-45deg);
 }

@@ -93,7 +93,7 @@ APP = {
                 settings: schedule.bankaraMatchSettings.find(setting => setting.mode === modeType) || null
             }))
             .filter(schedule => schedule.settings !== null);
-            APP.displayVS(data, true, type);
+            APP.displayVS(data);
         } else if ( type === 'salmon' ) {
             const salmonData = APP.matchList.coopGroupingSchedule.regularSchedules.nodes;
             data = salmonData.map(schedule => ({
@@ -121,7 +121,7 @@ APP = {
                 settings: schedule.xMatchSetting
             }))
             .flat();
-            APP.displayVS(data, true, type);
+            APP.displayVS(data);
         }   else { return };
     },
 
@@ -133,12 +133,7 @@ APP = {
             let endDate = APP.convertDate(el.endTime);
             section.innerHTML += `
             <div class ="displayBox turf">
-            <div class="banner"><span class="banner__text">Turf</span></div>
-            <div class="smallHeader">
-                <p>${startDate}</p>
-                <p>to</p>
-                <p>${endDate}</p>
-            </div>
+            <p class="smallHeader"><b>TIME:</b> ${startDate} - ${endDate}</p>
             <b>STAGES</b>
             <ul>
             <li>${el.settings.vsStages[0].name}</li>
@@ -151,28 +146,21 @@ APP = {
         })
     },
 
-    displayVS: (data, isSort, mode) => {
+    displayVS: (data, isSort) => {
         if (!isSort) {
             APP.currentData = data;
         }
         let vsRules = document.getElementsByClassName('vsRuleButtons')[0];
         vsRules.classList.remove('hidden');
+
         const section = document.getElementById('displayContent');
-
-        let type = mode.charAt(0).toUpperCase() + mode.slice(1);
-
         section.innerHTML = "";
         data.forEach(el => {
             let startDate = APP.convertDate(el.startTime);
             let endDate = APP.convertDate(el.endTime);
             section.innerHTML += `
                 <div class ="displayBox ${el.settings.vsRule.rule}">
-                <div class="banner"><span class="banner__text">${type}</span></div>
-                <div class="smallHeader">
-                    <p>${startDate}</p>
-                    <p>to</p>
-                    <p>${endDate}</p>
-                </div>
+                <p class="smallHeader"><b>TIME:</b> ${startDate} - ${endDate}</p>
                 <p class="miniHeader"><b>MODE:</b> ${el.settings.vsRule.name}</p>
                 <b>STAGES</b>
                 <ul>
@@ -193,12 +181,7 @@ APP = {
             let endDate = APP.convertDate(el.endTime);
             section.innerHTML += `
             <div class ="displayBox coop">
-            <div class="banner"><span class="banner__text">Co-op</span></div>
-                <div class="smallHeader">
-                    <p>${startDate}</p>
-                    <p>to</p>
-                    <p>${endDate}</p>
-                </div>
+            <p class="miniHeader"><b>TIME:</b> ${startDate} - ${endDate}</p>
             <b>STAGE</b>
             <ul>
             <li>${el.stages.name}</li>
